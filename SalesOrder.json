@@ -1,0 +1,156 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+      "title":"Sales Order",
+      "version":"1.0.0",
+      "description": "This is a testing service that displays Sales Orders"
+    },
+
+    "servers": [
+      {
+        "url": "/sap/opu/odata/sap/ZSALES_ORDER_DATA_SRV",
+        "description": "Advanced Applications Development system"
+      }
+    ],
+    "components": {
+        "parameters": {
+            "top": {
+                "name": "$top",
+                "in": "query",
+                "description": "Show only the first n items, see [Paging - Top](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=66)",
+                "schema": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            },
+            "skip": {
+                "name": "$skip",
+                "in": "query",
+                "description": "Skip the first n items, see [Paging - Skip](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=65)",
+                "schema":{
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        },
+        "securitySchemes": {
+            "basicAuthentication": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        },
+        "responses": {
+            "404":{
+                "description": "Not Found"
+            }
+        },
+        "schemas": {
+            "SalesOrderHeader":{
+                "type": "object",
+                "properties": {
+                    "SalesOrder":{
+                        "type": "string"
+                    },
+                    "DocumentType":{
+                        "type": "string"
+                    },
+                    "NetValue":{
+                        "type": "number"
+                    },
+                    "Currency":{
+                        "type": "string"
+                    },
+                    "SalesOrganization":{
+                        "type": "string"
+                    },
+                    "DistributionChannel":{
+                        "type": "string"
+                    },
+                    "Division":{
+                        "type": "string"
+                    },
+                    "CustomerReference":{
+                        "type": "string"
+                    },
+                    "Customer":{
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/SalesOrderHeaderSet": {
+            "get": {
+                "description": "Get sales order",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/top"
+                    },
+                    {
+                        "$ref": "#/components/parameters/skip"
+                    },
+                    {
+                      "name": "$filter",
+                      "in": "query",
+                      "description": "Filter items by property values, see [Filtering](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=64)",
+                      "schema": {
+                        "type": "string"
+                      }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"array",
+                                    "$ref": "#/components/schemas/SalesOrderHeader"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/SalesOrderHeaderSet('{SalesOrder}')": {
+            "get": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "SalesOrder",
+                        "in": "path",
+                        "required": true,
+                        "description": "Sales Order Id",
+                        "schema":{
+                            "type": "string",
+                            "maxLength": 10
+
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/schemas/SalesOrderHeader"
+                                }
+                            }
+                        }
+                    },
+                    "404":{
+                        "$ref": "#/components/responses/404"
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        {
+            "basicAuthentication": []
+        }
+    ]
+  }

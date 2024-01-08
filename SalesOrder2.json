@@ -1,0 +1,96 @@
+{
+    "openapi":"3.0.2",
+    "info": {
+      "title":"Sales Order 2",
+      "version":"1.0.0",
+      "description": "Service to display sales orders 2"
+    },
+
+    "servers": [
+      {
+        "url":"https://{host}:{port}/sap/opu/odata/sap/ZSALES_ORDER_DATA_SRV",
+        "description": "Advanced Application Development system",
+        "variables": {
+            "host": {
+                "default": "aadevapdap00.domain.local"
+            },
+            "port": {
+                "default": "44300"
+            }
+        }
+      },
+      {
+        "url": "https://aimdev.advapp.de/sap/opu/odata/sap/ZSALES_ORDER_DATA_SRV",
+        "description": "Advanced Applications Development system (other url)"
+      }
+    ],
+    "components": {
+        "parameters": {
+            "top": {
+                "name": "$top",
+                "in": "query",
+                "description": "Show only the first n items, see [Paging - Top](https://help.sap.com/doc/5890d27be418427993fafa6722cdc03b/Cloud/en-US/OdataV2.pdf#page=66)",
+                "schema": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            },
+            "skip": {
+                "name": "$skip",
+                "in": "query",
+                "description": "",
+                "schema":{
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        },
+        "securitySchemes": {
+            "basicAuthentication": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        }
+    },
+    "paths": {
+        "/SalesOrderHeaderSet": {
+            "get": {
+                "description": "Get sales order",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/SalesOrderHeaderSet('{SalesOrder}')": {
+            "get": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "SalesOrder",
+                        "in": "path",
+                        "required": true,
+                        "description": "Sales Order Id",
+                        "schema":{
+                            "type": "string",
+                            "maxLength": 10
+
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        {
+            "basicAuthentication": []
+        }
+    ]
+  }
